@@ -9,7 +9,7 @@ const  words = {
 	},
 
 	english:{
-		title:"Automataxd",
+		title:"Automaton",
 		textButton:"Inglés"
 	}
 }
@@ -29,28 +29,70 @@ function App() {
 		console.log("state_0")
 		if (string.length > count) {
 			if (string[count] === 'a') {
+				count++
 				state_1()
+				
+			}else{
+				error();
+			}
+			
+		}else{
+			if (string.length === 0) {
+				isAccept = true
 			}
 		}
+		
 	}
 
 	const state_1 = () => {
 		console.log("state_1")
 		if (string.length > count) {
-
+			if (string[count] === 'b') {
+				count++
+				state_2()
+				
+			}else{
+				error();
+			}
 		}
 	}
 
 	const state_2 = () => {
 		console.log("state_2")
 		if (string.length > count) {
-
+			if (string[count] === 'c') {
+				count++
+				state_3()
+				
+			}else{
+				if (string[count] === 'd') {
+					count++
+					state_4()
+					
+				}
+			}
 		}
 	}
 
 	const state_3 = () => {
+		
 		console.log("state_3")
 		if (string.length > count) {
+			
+			
+				if (string[count] === 'c') {
+					count++
+					state_3()
+					
+				} else {
+					if (string[count] === 'd') {
+						count++
+						state_4()
+						
+					}
+				}
+		
+			
 
 		}
 	}
@@ -58,15 +100,22 @@ function App() {
 	const state_4 = () => {
 		console.log("state_4")
 		if (string.length > count) {
-
+			if (string[count] === 'a') {
+				count++
+				state_1()
+				
+			}else{
+				error()
+				
+			}
+			
 		}
+		isAccept = true
 	}
 
 	const error = () => {
-		console.log("state_4")
-		if (string.length > count) {
-
-		}
+		console.log("error")
+		
 	}
 	const handleInputChange = (event) => {
 		setString(event.target.value)
