@@ -1,0 +1,15 @@
+{
+	"spanish":{
+		"title":"Automata",
+		"textButton":"Verificar",
+		"label":"Escribe algún texto",
+		"changeLanguage":"Inglés"
+	},
+
+	"english":{
+		"title":"Automaton",
+		"textButton":"Verify",
+		"label":"Write some text",
+		"changeLanguage":"Spanish"
+	}
+}
