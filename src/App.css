@@ -1,4 +1,148 @@
+:root{
+    --left:8%;
+    --bottom:32px;
+    --top-arrow:60px;
+    --top-return-arrow:-20px;
+    --top:200px;
+    --bg-primary:#1d3557;
+}
+
 main{
     width: 95%;
     margin:2rem auto;
+}
+
+.title{
+    text-align: center;
+}
+.form-group{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.form-group input {
+    width: 90%;
+    outline: none;  
+    height: 30px;
+    max-width: 300px;
+    font-size: 1.1rem;
+    border:2px solid var(--bg-primary);
+    border-radius: .2rem;
+    padding-left: .3rem;
+}
+label{
+    display: inline-block;
+    width:fit-content;
+    margin-bottom: .3rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+.form-group input:focus {
+    box-shadow: 0px 0px 3px 0px var(--bg-primary);}
+button {
+    outline: none;
+    padding:.3rem 1rem;
+    border:none;
+    color:#fff;
+    font-size: 1.05rem;
+    border-radius: .6rem;
+    background-color:var(--bg-primary);
+    cursor:pointer;
+    font-weight: bold;
+    transition:opacity .3s ease ;
+}
+button:hover{
+    opacity: .97;
+}
+.automata{
+    position: relative;
+    min-width: 500px;
+    width:100%;
+}
+
+.element{
+    position:absolute;
+}
+#q0{
+    left: var(--left);
+}
+#arrow_q0_to_q1{
+    left: calc(var(--left) * 2);
+}
+#q1{
+    left: calc(var(--left) * 3);
+}
+#arrow_q1_to_q2{
+    left: calc(var(--left) * 4);
+}
+#q2{
+    left: calc(var(--left) * 5);
+}
+#arrow_q2_to_q3{
+    left: calc(var(--left) * 6);
+}
+#arrow_q2_to_q4{
+    left: calc(var(--left) * 5);
+    top: calc(var(--top-arrow) + 60px);
+}
+
+#q3{
+    left: calc(var(--left) *7)
+}
+#arrow_return_q3{
+    top:var(--top-return-arrow);
+    left: calc(var(--left) * 7 + 4%);
+}
+#arrow_q3_to_q4{
+    left:calc(var(--left) * 7  - 9%);
+    top:calc(var(--top-arrow) + 20px );
+    transform:rotate(5deg);
+}
+#q4{
+    left: calc(var(--left) * 5);
+    top:var(--top);
+}
+#arrow_q4_to_q1{
+    left:calc(var(--left) * 3 + 5%);
+    top:var(--top-arrow);
+    transform:rotate(-5deg);
+}
+
+
+@media screen and (max-width:1200px) {
+    :root {
+        --left:10%;
+        --bottom:32px;
+        --top-arrow:60px;
+        --top-return-arrow:-20px;
+        --top:200px;
+    }
+}
+@media screen and (max-width:870px) {
+    :root {
+        --left:12%;
+        --bottom:32px;
+        --top-arrow:60px;
+        --top-return-arrow:-20px;
+        --top:200px;
+    }
+}
+@media screen and (max-width:700px) {
+    :root {
+        --left:16%;
+        --bottom:32px;
+        --top-arrow:60px;
+        --top-return-arrow:-20px;
+        --top:200px;
+    }
+}
+@media screen and (max-width:600px) {
+    :root {
+        --left:20%;
+        --bottom:32px;
+        --top-arrow:60px;
+        --top-return-arrow:-20px;
+        --top:200px;
+    }
 }
