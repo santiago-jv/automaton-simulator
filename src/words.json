@@ -1,0 +1,18 @@
+{
+	"spanish":{
+		"title":"Automata",
+		"textButton":"Verificar",
+		"label":"Escribe algún texto",
+		"accepted":"Palabra válida",
+		"rejected":"Palabra rechazada"
+	},
+
+	"english":{
+		"title":"Automaton",
+		"textButton":"Verify",
+		"label":"Write some text",
+		"accepted":"Valid word",
+		"rejected":"Word rejected"
+	
+	}
+}
