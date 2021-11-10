@@ -1,6 +1,6 @@
 
 import './App.css';
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import words from "./words.json" 
 import START_ARROW  from "./images/start_arrow.svg"
 import STATE_0 from "./images/state_0.svg";
@@ -10,7 +10,6 @@ import ARROW_Q1_TO_Q2 from "./images/arrow_q1_to_q2.svg"
 import STATE_2 from "./images/state_2.svg";
 import ARROW_Q2_TO_Q3 from "./images/arrow_q2_to_q3.svg"
 import ARROW_Q2_TO_Q4 from "./images/arrow_q2_to_q4.svg"
-
 import ARROW_RETURN_Q3 from "./images/arrow_return_q3.svg"
 import STATE_3 from "./images/state_3.svg";
 import ARROW_Q3_TO_Q4 from "./images/arrow_q3_to_q4.svg"
@@ -22,33 +21,51 @@ import Header from './components/Header';
 function App() {
 	let count = 0
 	const [language, setLanguage] = useState("spanish")
-	let aux = null
-	let word = null
-	let isAccept = false
+
 	const [string, setString] = useState("")
 	const [result, setResult] = useState(null)
-	
+	const [isOver, setIsOver] = useState(false)
+	const [isAccept, setIsAccept] = useState(false)
+	const elements = useRef();
 
-	const start = () => {
+	const start =async  () => {
 		count = 0
-		isAccept = false
-		aux = null
-		word = null
-		state_0()
-		setResult(isAccept? words[language].accepted: words[language].rejected)
+		setIsAccept( false)
+		setIsOver(false)
+		await state_0()
+		console.log("hola");
+		setIsOver(true)
 	}
 	useEffect(() => {
-		
-
+		elements.current = document.querySelectorAll('.element')
+		console.log(elements.current)
 		
 	}, [])
-	const state_0 = () => {
+
+	const animateElement = async (index)=>{
 		
+		return new Promise((resolve, reject)=>{
+			const element = elements.current[index]
+			element.animate([
+				{ transform:'scale(1.1)'},
+				{ transform:'scale(1)' }
+			  ], {duration: 1000,});
+
+			setInterval(()=>{
+				resolve()
+			}
+			,1000)
+		})
+	}
+	const state_0 = async() => {
+		await animateElement(0)
+		await animateElement(1)
 		console.log("state_0")
 		if (isNotOutRange()) {
 			if (string[count] === 'a') {
+				await animateElement(2)
 				count++
-				state_1()
+				await state_1()
 				
 			}else{
 				error();
@@ -56,19 +73,21 @@ function App() {
 			
 		}else{
 			if (string.length === 0) {
-				isAccept = true
+				setIsAccept(true)
 			}
 		}
 		
 	}
 	const isNotOutRange = ()=>string.length > count
 	
-	const state_1 = () => {
+	const state_1 = async () => {
 		console.log("state_1")
+		await animateElement(3)
 		if (isNotOutRange()) {
 			if (string[count] === 'b') {
 				count++
-				state_2()
+				await animateElement(4)
+				await state_2()
 				
 			}else{
 				error();
@@ -76,17 +95,20 @@ function App() {
 		}
 	}
 
-	const state_2 = () => {
+	const state_2 = async () => {
+		await animateElement(5)
 		console.log("state_2")
 		if (isNotOutRange()) {
 			if (string[count] === 'c') {
 				count++
-				state_3()
+				await animateElement(6)
+				await state_3()
 				
 			}
 			else if (string[count] === 'd') {
 					count++
-					state_4()
+					await animateElement(7)
+					await state_4()
 				
 			}
 			else {
@@ -95,18 +117,20 @@ function App() {
 		}
 	}
 
-	const state_3 = () => {
-		
+	const state_3 = async() => {
+		await animateElement(8)
 		console.log("state_3")
 		if (isNotOutRange()) {
 	
 			if (string[count] === 'c') {
 				count++
-				state_3()
+				await animateElement(9)
+				await state_3()
 				
 			} else if (string[count] === 'd') {
 				count++
-				state_4()
+				await animateElement(10)
+				await state_4()
 			
 			}	
 			else{
@@ -116,55 +140,46 @@ function App() {
 		}
 	}
 
-	const state_4 = () => {
+	const state_4 = async() => {
+		await animateElement(11)
 		console.log("state_4")
-		isAccept = true
-		console.log("auxiliar y word:", aux, word);
-		console.log("count",count);
+		setIsAccept(true)
 		if (isNotOutRange()) {
-			console.log("***** auxiliar:",aux,"********");
-			if((aux &&  aux !== word)) {
-				console.log("entra");
-				error()
-			}
+		
 			
-			else if (string[count] === 'a') {
-				aux = string.slice(aux?aux.length:0,count)
-				if(!word) word = aux
-				console.log("entra por aca xd", aux,word);
+			if (string[count] === 'a') {
+				setIsAccept( false)
 				count++
-				state_1()
+				await animateElement(12)
+				await state_1()
 				
 			}else{
 				error()
 				
 			}
 		}
-		else {
-			if((aux &&  aux !== word  )) {
-				console.log("entra");
-				error()
-			}
-		}
-	
+		
 	}
 
 	const error = () => {
-		isAccept=false
+		setIsAccept(false)
 		console.log("error")
 		
 	}
-	const handleInputChange = (event) => {
-		setString(event.target.value)
-	}
+	const handleInputChange = (event) => setString(event.target.value)
+
 	const verify = (event) => {
 		event.preventDefault()
 		start()
 	}
 	const changeLanguage = ()=>{
 		setLanguage("spanish"===language? "english":"spanish")
-		setResult(isAccept? words[language].accepted: words[language].rejected)
+		
 	}
+
+	useEffect(() => {
+		setResult(isAccept? words[language].accepted: words[language].rejected)
+	}, [isAccept,language,isOver])
 	return (
 		<>	
 			<Header words={words[language]} changeLanguage={changeLanguage} language={language} />
@@ -177,7 +192,7 @@ function App() {
 				<button type="submit">{words[language].textButton}</button>
 				</form>
 
-				<h1>{result && result}</h1>
+				<h1>{isOver && result}</h1>
 
 
 				<div className="automata">

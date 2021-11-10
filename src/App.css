@@ -146,3 +146,11 @@ button:hover{
         --top:200px;
     }
 }
+@keyframes move {
+    from{
+        transform:scale(1.1);
+    }
+    to {
+        transform:scale(1)
+    }
+}
