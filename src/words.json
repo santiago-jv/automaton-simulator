@@ -2,17 +2,23 @@
 	"spanish":{
 		"title":"Automata",
 		"textButton":"Verificar",
-		"label":"Escribe algún texto",
+		"labelString":"Escribe algún texto",
+		"labelSpeed":"Escoge la velocidad de animación",
 		"accepted":"Palabra válida",
-		"rejected":"Palabra rechazada"
+		"rejected":"Palabra rechazada",
+		"fastOption":"Rápida (500ms)",
+		"slowOption":"Lenta (1500ms)"
 	},
 
 	"english":{
 		"title":"Automaton",
 		"textButton":"Verify",
-		"label":"Write some text",
+		"labelString":"Write some text",
+		"labelSpeed":"Choose the animation speed",
 		"accepted":"Valid word",
-		"rejected":"Word rejected"
+		"rejected":"Word rejected",
+		"fastOption":"Fast (500ms)",
+		"slowOption":"Slow (1500ms)"
 	
 	}
 }

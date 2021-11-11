@@ -21,20 +21,21 @@ import Header from './components/Header';
 function App() {
 	let count = 0
 	const [language, setLanguage] = useState("spanish")
-
 	const [string, setString] = useState("")
 	const [result, setResult] = useState(null)
 	const [isOver, setIsOver] = useState(false)
 	const [isAccept, setIsAccept] = useState(false)
 	const elements = useRef();
-
+	const [speed, setSpeed] = useState(500)
+	const [isAnimating, setIsAnimating] = useState(false)
 	const start =async  () => {
+		setIsAnimating(true)
 		count = 0
 		setIsAccept( false)
 		setIsOver(false)
 		await state_0()
-		console.log("hola");
 		setIsOver(true)
+		setIsAnimating(false)
 	}
 	useEffect(() => {
 		elements.current = document.querySelectorAll('.element')
@@ -44,17 +45,17 @@ function App() {
 
 	const animateElement = async (index)=>{
 		
-		return new Promise((resolve, reject)=>{
+		return new Promise((resolve)=>{
 			const element = elements.current[index]
 			element.animate([
 				{ transform:'scale(1.1)'},
 				{ transform:'scale(1)' }
-			  ], {duration: 1000,});
+			  ], {duration: speed,});
 
 			setInterval(()=>{
 				resolve()
 			}
-			,1000)
+			,speed)
 		})
 	}
 	const state_0 = async() => {
@@ -145,8 +146,7 @@ function App() {
 		console.log("state_4")
 		setIsAccept(true)
 		if (isNotOutRange()) {
-		
-			
+
 			if (string[count] === 'a') {
 				setIsAccept( false)
 				count++
@@ -186,13 +186,20 @@ function App() {
 			<main>
 				<form onSubmit={verify}>
 				<div className="form-group">
-					<label htmlFor="text">{words[language].label}</label>
+					<label htmlFor="text">{words[language].labelString}</label>
 					<input id="text" onChange={handleInputChange} type="text"/>
 				</div>
-				<button type="submit">{words[language].textButton}</button>
+				<div className="form-group">
+					<label htmlFor="speed">{words[language].labelSpeed}</label>
+					<select id="speed" onChange={(event)=>setSpeed(Number(event.target.value))} value={speed}>
+						<option value="500">{words[language].fastOption}</option>
+						<option value="1500">{words[language].slowOption}</option>
+					</select>
+				</div>
+				<button disabled={isAnimating} type="submit">{words[language].textButton}</button>
 				</form>
 
-				<h1>{isOver && result}</h1>
+				<h2 className="result">{isOver && result}</h2>
 
 
 				<div className="automata">
