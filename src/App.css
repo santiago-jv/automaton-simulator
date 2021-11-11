@@ -6,12 +6,18 @@
     --top:200px;
     --bg-primary:#1d3557;
 }
+img{
+    user-select: none;
+}
 
 main{
     width: 95%;
     margin:2rem auto;
 }
-
+.result{
+    margin:1rem 0;
+    text-decoration: underline;
+}
 .title{
     text-align: center;
 }
@@ -21,10 +27,10 @@ main{
     margin-bottom: 1rem;
 }
 
-.form-group input {
+.form-group input,select {
     width: 90%;
     outline: none;  
-    height: 30px;
+    height: 30px !important;
     max-width: 300px;
     font-size: 1.1rem;
     border:2px solid var(--bg-primary);
@@ -38,7 +44,7 @@ label{
     font-weight: bold;
     font-size: 1.1rem;
 }
-.form-group input:focus {
+.form-group input:focus, select:focus {
     box-shadow: 0px 0px 3px 0px var(--bg-primary);}
 button {
     outline: none;
@@ -95,18 +101,18 @@ button:hover{
     left: calc(var(--left) * 7 + 4%);
 }
 #arrow_q3_to_q4{
-    left:calc(var(--left) * 7  - 9%);
-    top:calc(var(--top-arrow) + 20px );
-    transform:rotate(5deg);
+    left:calc(var(--left) * 7  - 8%);
+    top:calc(var(--top-arrow) + 40px );
+ 
 }
 #q4{
     left: calc(var(--left) * 5);
     top:var(--top);
 }
 #arrow_q4_to_q1{
-    left:calc(var(--left) * 3 + 5%);
-    top:var(--top-arrow);
-    transform:rotate(-5deg);
+    left:calc(var(--left) * 3 + 6%);
+    top:calc(var(--top-arrow) + 35px);
+
 }
 
 
@@ -144,13 +150,5 @@ button:hover{
         --top-arrow:60px;
         --top-return-arrow:-20px;
         --top:200px;
-    }
-}
-@keyframes move {
-    from{
-        transform:scale(1.1);
-    }
-    to {
-        transform:scale(1)
     }
 }
