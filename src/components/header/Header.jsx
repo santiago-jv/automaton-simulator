@@ -1,7 +1,7 @@
 import React from 'react'
 import "./header.css"
-import SPANISH from "../images/spanish.svg"
-import ENGLISH from "../images/english.svg"
+import SPANISH from "../../images/spanish.svg"
+import ENGLISH from "../../images/english.svg"
 const Header = ({words,language,changeLanguage}) => {
     return (
         <header>
