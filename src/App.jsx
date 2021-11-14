@@ -1,11 +1,11 @@
 
 import './App.css';
 import { useEffect, useRef, useState } from "react"
-import words from "./words.json" 
+import {words} from "./constants/constants" 
 
 import Header from './components/header/Header.jsx';
-import { elementsProperties } from './constants';
-import Element from './components/header/element/Element';
+import { elementsProperties } from './constants/constants';
+import Element from './components/element/Element';
 
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
 			element.animate([
 				{ transform:'scale(1.1)'},
 				{ transform:'scale(1)' }
-			], {duration: speed.current,});
+			], {duration: speed.current});
 			
 			setTimeout(()=>{
 				resolve()
@@ -37,19 +37,16 @@ function App() {
 	const start = async  () => {
 		if(Array.from(string.current).every(char=>char === ' ')) string.current = "λ"
 		setIsAnimating(true)
-		setCurrentChar("")
+		setResult(null)
+		setCurrentChar(null)
 		count = 0
 		isAccept.current = false
-	
 		await state_0()
-
 		setIsAnimating(false)
 	}
 	
 	const showCurrentChart = (char)=>{
-		if(char === '')setCurrentChar("λ")
-		else if(!char) setCurrentChar("")
-		else setCurrentChar(char)
+		char ? setCurrentChar(char):setCurrentChar("")
 	}
 	const state_0 = async() => {
 		await animateElement(0)
@@ -157,10 +154,17 @@ function App() {
 		const changeLanguage = ()=> setLanguage("spanish"===language? "english":"spanish")	
 	
 		
+		useEffect(() =>{ 
+		
+			if(elements.current && !isAnimating){
+				 setResult(isAccept.current? words[language].accepted: words[language].rejected)
+			}
+		
+
+		},
+		[language,isAnimating])
 		useEffect(() => elements.current = document.querySelectorAll('.element'), [])
 		
-		useEffect(() => setResult(isAccept.current? words[language].accepted: words[language].rejected),
-		[language,isAnimating])
 	return (
 		<>	
 			<Header words={words[language]} changeLanguage={changeLanguage} language={language} />
@@ -170,6 +174,7 @@ function App() {
 						<label htmlFor="text">{words[language].labelString}</label>
 						<input id="text" onChange={handleInputChange} type="text"/>
 					</div>
+
 					<div className="form-group">
 						<label htmlFor="speed">{words[language].labelSpeed}</label>
 						<select id="speed" onChange={(event)=>speed.current= Number(event.target.value)} value={speed}>
@@ -177,10 +182,12 @@ function App() {
 							<option value="1500">{words[language].slowOption}</option>
 						</select>
 					</div>
+
 					<button disabled={isAnimating} type="submit">{words[language].textButton}</button>
 				</form>
-				<p className="current-char">{words[language].currentChar}: {currentChar}</p>
-				<h2 className="result" style={{color:result === words[language].accepted ? 'rgb(34, 168, 34)':'red'}}>{!isAnimating && "Resultado: "+ result}</h2>
+				
+				{(isAnimating && currentChar) && <p className="current-char">{words[language].currentChar}: {currentChar}</p>}
+				{result && <h2 className="result" style={{color:result === words[language].accepted ? 'rgb(34, 168, 34)':'red'}}>{result}</h2>}
 
 
 				<div className="automata">
