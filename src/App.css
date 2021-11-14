@@ -14,8 +14,9 @@ img{
 main{
     width: 95%;
     margin:2rem auto;
-    min-height: calc(100vh - 8rem);
+    height:100vh;
     overflow-x:auto;
+    overflow-y:hidden;
 }
 .result{
     margin:1rem 0;
