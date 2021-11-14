@@ -8,15 +8,23 @@
 }
 img{
     user-select: none;
+    
 }
 
 main{
     width: 95%;
     margin:2rem auto;
+    min-height: calc(100vh - 8rem);
+    overflow-x:auto;
 }
 .result{
     margin:1rem 0;
-    text-decoration: underline;
+    
+}
+.current-char{
+    margin:1rem 0;
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 .title{
     text-align: center;
@@ -30,7 +38,7 @@ main{
 .form-group input,select {
     width: 90%;
     outline: none;  
-    height: 30px !important;
+    height: 30px;
     max-width: 300px;
     font-size: 1.1rem;
     border:2px solid var(--bg-primary);

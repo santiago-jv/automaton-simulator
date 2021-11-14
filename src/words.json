@@ -1,13 +1,14 @@
 {
 	"spanish":{
-		"title":"Automata",
+		"title":"Autómata",
 		"textButton":"Verificar",
 		"labelString":"Escribe algún texto",
 		"labelSpeed":"Escoge la velocidad de animación",
 		"accepted":"Palabra válida",
 		"rejected":"Palabra rechazada",
 		"fastOption":"Rápida (500ms)",
-		"slowOption":"Lenta (1500ms)"
+		"slowOption":"Lenta (1500ms)",
+		"currentChar":"Caracter actual"
 	},
 
 	"english":{
@@ -18,7 +19,8 @@
 		"accepted":"Valid word",
 		"rejected":"Word rejected",
 		"fastOption":"Fast (500ms)",
-		"slowOption":"Slow (1500ms)"
+		"slowOption":"Slow (1500ms)",
+		"currentChar":"Current character"
 	
 	}
 }

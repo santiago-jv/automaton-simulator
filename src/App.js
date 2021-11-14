@@ -2,46 +2,22 @@
 import './App.css';
 import { useEffect, useRef, useState } from "react"
 import words from "./words.json" 
-import START_ARROW  from "./images/start_arrow.svg"
-import STATE_0 from "./images/state_0.svg";
-import ARROW_Q0_TO_Q1 from "./images/arrow_q0_to_q1.svg"
-import STATE_1 from "./images/state_1.svg";
-import ARROW_Q1_TO_Q2 from "./images/arrow_q1_to_q2.svg"
-import STATE_2 from "./images/state_2.svg";
-import ARROW_Q2_TO_Q3 from "./images/arrow_q2_to_q3.svg"
-import ARROW_Q2_TO_Q4 from "./images/arrow_q2_to_q4.svg"
-import ARROW_RETURN_Q3 from "./images/arrow_return_q3.svg"
-import STATE_3 from "./images/state_3.svg";
-import ARROW_Q3_TO_Q4 from "./images/arrow_q3_to_q4.svg"
-import STATE_4 from "./images/state_4.svg";
-import ARROW_Q4_TO_Q1 from "./images/arrow_q4_to_q1.svg"
-import Header from './components/Header';
+
+import Header from './components/header/Header.jsx';
+import { elementsProperties } from './constants';
+import Element from './components/header/element/Element';
 
 
 function App() {
 	let count = 0
 	const [language, setLanguage] = useState("spanish")
-	const [string, setString] = useState("")
+	const string = useRef("")
+	const [currentChar, setCurrentChar] = useState("")
 	const [result, setResult] = useState(null)
-	const [isOver, setIsOver] = useState(false)
-	const [isAccept, setIsAccept] = useState(false)
-	const elements = useRef();
-	const [speed, setSpeed] = useState(500)
+	const isAccept = useRef(false)
+	const elements = useRef()
+	const speed = useRef(500)
 	const [isAnimating, setIsAnimating] = useState(false)
-	const start =async  () => {
-		setIsAnimating(true)
-		count = 0
-		setIsAccept( false)
-		setIsOver(false)
-		await state_0()
-		setIsOver(true)
-		setIsAnimating(false)
-	}
-	useEffect(() => {
-		elements.current = document.querySelectorAll('.element')
-		console.log(elements.current)
-		
-	}, [])
 
 	const animateElement = async (index)=>{
 		
@@ -50,198 +26,167 @@ function App() {
 			element.animate([
 				{ transform:'scale(1.1)'},
 				{ transform:'scale(1)' }
-			  ], {duration: speed,});
-
-			setInterval(()=>{
+			], {duration: speed.current,});
+			
+			setTimeout(()=>{
 				resolve()
 			}
-			,speed)
+			,speed.current)
 		})
+	}
+	const start = async  () => {
+		if(Array.from(string.current).every(char=>char === ' ')) string.current = "λ"
+		setIsAnimating(true)
+		setCurrentChar("")
+		count = 0
+		isAccept.current = false
+	
+		await state_0()
+
+		setIsAnimating(false)
+	}
+	
+	const showCurrentChart = (char)=>{
+		if(char === '')setCurrentChar("λ")
+		else if(!char) setCurrentChar("")
+		else setCurrentChar(char)
 	}
 	const state_0 = async() => {
 		await animateElement(0)
+		showCurrentChart(string.current[count])
 		await animateElement(1)
 		console.log("state_0")
 		if (isNotOutRange()) {
-			if (string[count] === 'a') {
+			console.log("entra");
+			if (string.current[count] === 'a') {
 				await animateElement(2)
 				count++
 				await state_1()
 				
-			}else{
-				error();
 			}
+			else if (string.current === "λ") isAccept.current = true
+
+			else error();
 			
-		}else{
-			if (string.length === 0) {
-				setIsAccept(true)
-			}
 		}
 		
 	}
-	const isNotOutRange = ()=>string.length > count
+	const isNotOutRange = ()=>string.current.length > count
 	
 	const state_1 = async () => {
 		console.log("state_1")
+		showCurrentChart(string.current[count])
 		await animateElement(3)
+
 		if (isNotOutRange()) {
-			if (string[count] === 'b') {
+			if (string.current[count] === 'b') {
 				count++
 				await animateElement(4)
 				await state_2()
 				
-			}else{
-				error();
-			}
+			}else error();
 		}
 	}
-
+	
 	const state_2 = async () => {
+		showCurrentChart(string.current[count])
 		await animateElement(5)
 		console.log("state_2")
 		if (isNotOutRange()) {
-			if (string[count] === 'c') {
+			if (string.current[count] === 'c') {
 				count++
 				await animateElement(6)
 				await state_3()
 				
 			}
-			else if (string[count] === 'd') {
-					count++
-					await animateElement(7)
-					await state_4()
-				
-			}
-			else {
-				error()
-			}
-		}
-	}
-
-	const state_3 = async() => {
-		await animateElement(8)
-		console.log("state_3")
-		if (isNotOutRange()) {
-	
-			if (string[count] === 'c') {
+			else if (string.current[count] === 'd') {
 				count++
-				await animateElement(9)
-				await state_3()
-				
-			} else if (string[count] === 'd') {
-				count++
-				await animateElement(10)
+				await animateElement(7)
 				await state_4()
-			
-			}	
-			else{
-				error()
+					
 			}
+			else error()
+		}
+	}
+		
+		const state_3 = async() => {
+			showCurrentChart(string.current[count])
+			await animateElement(8)
+			console.log("state_3")
+			if (isNotOutRange()) {
+				
+				if (string.current[count] === 'c') {
+					count++
+					await animateElement(9)
+					await state_3()
+					
+				} else if (string.current[count] === 'd') {
+					count++
+					await animateElement(10)
+					await state_4()
+				}	
+				else error()	
+			}
+		}
+		
+		const state_4 = async() => {
+			showCurrentChart(string.current[count])
+			await animateElement(11)
+			console.log("state_4")
+			isAccept.current = true
+			if (isNotOutRange()) {	
+				if (string.current[count] === 'a') {
+					isAccept.current =  false
+					count++
+					await animateElement(12)
+					await state_1()		
+				} else error()		
+			}
+		}
+		
+		const error = () => {
+			isAccept.current = false
+			console.log("error")
+		}
+		const handleInputChange = (event) => string.current = event.target.value
+		
+		const verify = (event) => {
+			event.preventDefault()
+			start()
+		} 	
+		const changeLanguage = ()=> setLanguage("spanish"===language? "english":"spanish")	
 	
-		}
-	}
-
-	const state_4 = async() => {
-		await animateElement(11)
-		console.log("state_4")
-		setIsAccept(true)
-		if (isNotOutRange()) {
-
-			if (string[count] === 'a') {
-				setIsAccept( false)
-				count++
-				await animateElement(12)
-				await state_1()
-				
-			}else{
-				error()
-				
-			}
-		}
 		
-	}
-
-	const error = () => {
-		setIsAccept(false)
-		console.log("error")
+		useEffect(() => elements.current = document.querySelectorAll('.element'), [])
 		
-	}
-	const handleInputChange = (event) => setString(event.target.value)
-
-	const verify = (event) => {
-		event.preventDefault()
-		start()
-	}
-	const changeLanguage = ()=>{
-		setLanguage("spanish"===language? "english":"spanish")
-		
-	}
-
-	useEffect(() => {
-		setResult(isAccept? words[language].accepted: words[language].rejected)
-	}, [isAccept,language,isOver])
+		useEffect(() => setResult(isAccept.current? words[language].accepted: words[language].rejected),
+		[language,isAnimating])
 	return (
 		<>	
 			<Header words={words[language]} changeLanguage={changeLanguage} language={language} />
 			<main>
 				<form onSubmit={verify}>
-				<div className="form-group">
-					<label htmlFor="text">{words[language].labelString}</label>
-					<input id="text" onChange={handleInputChange} type="text"/>
-				</div>
-				<div className="form-group">
-					<label htmlFor="speed">{words[language].labelSpeed}</label>
-					<select id="speed" onChange={(event)=>setSpeed(Number(event.target.value))} value={speed}>
-						<option value="500">{words[language].fastOption}</option>
-						<option value="1500">{words[language].slowOption}</option>
-					</select>
-				</div>
-				<button disabled={isAnimating} type="submit">{words[language].textButton}</button>
+					<div className="form-group">
+						<label htmlFor="text">{words[language].labelString}</label>
+						<input id="text" onChange={handleInputChange} type="text"/>
+					</div>
+					<div className="form-group">
+						<label htmlFor="speed">{words[language].labelSpeed}</label>
+						<select id="speed" onChange={(event)=>speed.current= Number(event.target.value)} value={speed}>
+							<option value="500">{words[language].fastOption}</option>
+							<option value="1500">{words[language].slowOption}</option>
+						</select>
+					</div>
+					<button disabled={isAnimating} type="submit">{words[language].textButton}</button>
 				</form>
-
-				<h2 className="result">{isOver && result}</h2>
+				<p className="current-char">{words[language].currentChar}: {currentChar}</p>
+				<h2 className="result" style={{color:result === words[language].accepted ? 'rgb(34, 168, 34)':'red'}}>{!isAnimating && "Resultado: "+ result}</h2>
 
 
 				<div className="automata">
-					<div id="start_arrow" className="element">
-						<img alt="element of automaton" src={START_ARROW} />
-					</div>
-					<div id="q0" className="element">
-						<img alt="element of automaton" src={STATE_0} />
-					</div>
-					<div id="arrow_q0_to_q1" className="element">
-						<img alt="element of automaton" src={ARROW_Q0_TO_Q1} />
-					</div>
-					<div id="q1" className="element">
-						<img alt="element of automaton" src={STATE_1} />
-					</div>
-					<div id="arrow_q1_to_q2" className="element">
-						<img alt="element of automaton" src={ARROW_Q1_TO_Q2} />
-					</div>
-					<div id="q2" className="element">
-						<img alt="element of automaton" src={STATE_2} />
-					</div>
-					<div id="arrow_q2_to_q3" className="element">
-						<img  alt="element of automaton" src={ARROW_Q2_TO_Q3} />
-					</div>
-					<div id="arrow_q2_to_q4" className="element">
-						<img alt="element of automaton" src={ARROW_Q2_TO_Q4} />
-					</div>
-					<div id="q3" className="element">
-						<img alt="element of automaton" src={STATE_3} />
-					</div>
-					<div id="arrow_return_q3" className="element">
-						<img alt="element of automaton" src={ARROW_RETURN_Q3} />
-					</div>
-					<div id="arrow_q3_to_q4" className="element">
-						<img alt="element of automaton" src={ARROW_Q3_TO_Q4} />
-					</div>
-					<div id="q4" className="element">
-						<img alt="element of automaton" src={STATE_4} />
-					</div>
-					<div id="arrow_q4_to_q1" className="element">
-						<img alt="element of automaton" src={ARROW_Q4_TO_Q1} />
-					</div>
+					{elementsProperties.map((elementProperties,index) => (
+						<Element key={index} id={elementProperties.id} image={elementProperties.image} />
+					))}
 				
 				</div>
 			</main>
