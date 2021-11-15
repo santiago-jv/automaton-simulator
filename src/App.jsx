@@ -21,6 +21,7 @@ function App() {
 	const [isAnimating, setIsAnimating] = useState(false)
 	let auxiliar = ""
 	let startIndex = 0
+
 	const animateElement = async (index)=>{	
 		return new Promise((resolve)=>{
 			const element = elements.current[index]
@@ -49,7 +50,7 @@ function App() {
 	const showCurrentChart = (char)=>{
 		char ? setCurrentChar(char):setCurrentChar("")
 	}
-	const state_0 = async() => {
+	const state_0 = async () => {
 		await animateElement(0)
 		showCurrentChart(string.current[count])
 		await animateElement(1)
