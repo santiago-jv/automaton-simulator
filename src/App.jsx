@@ -14,24 +14,25 @@ function App() {
 	const string = useRef("")
 	const [currentChar, setCurrentChar] = useState("")
 	const [result, setResult] = useState(null)
-	const isAccept = useRef(false)
+	const isAccept = useRef(null)
 	const elements = useRef()
-	const speed = useRef(500)
+	const [speed, setSpeed] = useState(500)
+	const [formData, setFormData] = useState("")
 	const [isAnimating, setIsAnimating] = useState(false)
-
-	const animateElement = async (index)=>{
-		
+	let auxiliar = ""
+	let startIndex = 0
+	const animateElement = async (index)=>{	
 		return new Promise((resolve)=>{
 			const element = elements.current[index]
 			element.animate([
 				{ transform:'scale(1.1)'},
 				{ transform:'scale(1)' }
-			], {duration: speed.current});
+			], {duration: speed});
 			
 			setTimeout(()=>{
 				resolve()
 			}
-			,speed.current)
+			,speed)
 		})
 	}
 	const start = async  () => {
@@ -52,9 +53,7 @@ function App() {
 		await animateElement(0)
 		showCurrentChart(string.current[count])
 		await animateElement(1)
-		console.log("state_0")
 		if (isNotOutRange()) {
-			console.log("entra");
 			if (string.current[count] === 'a') {
 				await animateElement(2)
 				count++
@@ -71,7 +70,6 @@ function App() {
 	const isNotOutRange = ()=>string.current.length > count
 	
 	const state_1 = async () => {
-		console.log("state_1")
 		showCurrentChart(string.current[count])
 		await animateElement(3)
 
@@ -88,7 +86,6 @@ function App() {
 	const state_2 = async () => {
 		showCurrentChart(string.current[count])
 		await animateElement(5)
-		console.log("state_2")
 		if (isNotOutRange()) {
 			if (string.current[count] === 'c') {
 				count++
@@ -109,7 +106,6 @@ function App() {
 		const state_3 = async() => {
 			showCurrentChart(string.current[count])
 			await animateElement(8)
-			console.log("state_3")
 			if (isNotOutRange()) {
 				
 				if (string.current[count] === 'c') {
@@ -125,41 +121,56 @@ function App() {
 				else error()	
 			}
 		}
-		
+
 		const state_4 = async() => {
 			showCurrentChart(string.current[count])
 			await animateElement(11)
-			console.log("state_4")
 			isAccept.current = true
 			if (isNotOutRange()) {	
+				
 				if (string.current[count] === 'a') {
+					
+					if(!auxiliar)auxiliar = string.current.slice(auxiliar?auxiliar.length:0,count)
+					
+					startIndex = startIndex + auxiliar.length
 					isAccept.current =  false
 					count++
 					await animateElement(12)
 					await state_1()		
 				} else error()		
 			}
+			else{
+				if((auxiliar &&  auxiliar !== string.current.slice(startIndex, count))) {
+					error()
+				}
+
+			}
 		}
 		
 		const error = () => {
 			isAccept.current = false
-			console.log("error")
 		}
-		const handleInputChange = (event) => string.current = event.target.value
+		const handleInputChange = (event) => {
+			setFormData(event.target.value)
+		}
 		
 		const verify = (event) => {
 			event.preventDefault()
+			string.current = formData
 			start()
 		} 	
 		const changeLanguage = ()=> setLanguage("spanish"===language? "english":"spanish")	
 	
 		
 		useEffect(() =>{ 
-		
-			if(elements.current && !isAnimating){
-				 setResult(isAccept.current? words[language].accepted: words[language].rejected)
+			if(elements.current && !isAnimating ){
+				let newResult;
+				if(isAccept.current === null) newResult = null;
+				else if (isAccept.current) newResult = words[language].accepted 
+				else newResult = words[language].rejected
+
+				setResult(newResult)
 			}
-		
 
 		},
 		[language,isAnimating])
@@ -172,15 +183,27 @@ function App() {
 				<form onSubmit={verify}>
 					<div className="form-group">
 						<label htmlFor="text">{words[language].labelString}</label>
-						<input id="text" onChange={handleInputChange} type="text"/>
-					</div>
+						<input value={formData} id="text" onChange={handleInputChange} type="text"/>
+						<p className="suggestions">
+						{words[language].regularExpressionLabel}: <strong>(ab+c*d)*</strong>
+						</p>
+						<p className="examples">
+							<p className="example-title">{words[language].exampleLabel}</p>
+							<b onClick={(event)=>setFormData("λ")} className="example">λ</b>
+							<b onClick={(event)=>setFormData("abcd")} className="example">abcd</b>
+							<b onClick={(event)=>setFormData("abcccd")} className="example">abcccd</b>
+							<b onClick={(event)=>setFormData( "abcdabcd")} className="example">abcdabcd</b>
+							<b onClick={(event)=>setFormData("abccccdabccccdabccccd")} className="example">abccccdabccccdabccccd</b>
 
+						</p>
+					</div>
+{/* } */}
 					<div className="form-group">
+						
 						<label htmlFor="speed">{words[language].labelSpeed}</label>
-						<select id="speed" onChange={(event)=>speed.current= Number(event.target.value)} value={speed}>
-							<option value="500">{words[language].fastOption}</option>
-							<option value="1500">{words[language].slowOption}</option>
-						</select>
+					
+						<input  type="range" min="200" max="1500"  value={speed} onChange={(event)=>setSpeed(Number(event.target.value))}  step="100"/>
+						<p className="speed-info">{words[language].currentSpeed} {speed} ms</p>
 					</div>
 
 					<button disabled={isAnimating} type="submit">{words[language].textButton}</button>
