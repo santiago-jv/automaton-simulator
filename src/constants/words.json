@@ -6,9 +6,10 @@
 		"labelSpeed":"Escoge la velocidad de animación",
 		"accepted":"Palabra válida",
 		"rejected":"Palabra rechazada",
-		"fastOption":"Rápida (500ms)",
-		"slowOption":"Lenta (1500ms)",
-		"currentChar":"Caracter actual"
+		"currentChar":"Caracter actual",
+		"regularExpressionLabel":"Expresión regular",
+		"exampleLabel": "Ejemplos de uso:",
+		"currentSpeed":"Velocidad actual:"
 	},
 
 	"english":{
@@ -18,9 +19,10 @@
 		"labelSpeed":"Choose the animation speed",
 		"accepted":"Valid word",
 		"rejected":"Word rejected",
-		"fastOption":"Fast (500ms)",
-		"slowOption":"Slow (1500ms)",
-		"currentChar":"Current character"
-	
+		"currentChar":"Current character",
+		"regularExpressionLabel":"Regular expression",
+		"exampleLabel"	: "Use examples:",
+		"currentSpeed":"Current speed:"
+		
 	}
 }
