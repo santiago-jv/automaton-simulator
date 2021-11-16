@@ -38,6 +38,10 @@ function App() {
 		})
 	}
 	const start = async  () => {
+		window.scroll({
+			top:document.body.scrollHeight,
+			behavior:'smooth'
+		})
 		if(Array.from(string.current).every(char=>char === ' ')) string.current = "λ"
 		setIsAnimating(true)
 		setResult(null)
