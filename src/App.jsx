@@ -26,7 +26,8 @@ function App() {
 		return new Promise((resolve)=>{
 			const element = elements.current[index]
 			element.animate([
-				{ transform:'scale(1.1)'},
+				{ transform:'scale(1)'},
+				{ transform:'scale(1.05)'},
 				{ transform:'scale(1)' }
 			], {duration: speed});
 			
@@ -188,17 +189,19 @@ function App() {
 						<p className="suggestions">
 						{words[language].regularExpressionLabel}: <strong>(ab+c*d)*</strong>
 						</p>
-						<p className="examples">
+						<div className="examples-container">
 							<p className="example-title">{words[language].exampleLabel}</p>
-							<b onClick={(event)=>setFormData("λ")} className="example">λ</b>
-							<b onClick={(event)=>setFormData("abcd")} className="example">abcd</b>
-							<b onClick={(event)=>setFormData("abcccd")} className="example">abcccd</b>
-							<b onClick={(event)=>setFormData( "abcdabcd")} className="example">abcdabcd</b>
-							<b onClick={(event)=>setFormData("abccccdabccccdabccccd")} className="example">abccccdabccccdabccccd</b>
+							<div className="examples">
+								<b onClick={()=>setFormData("λ")} className="example">λ</b>
+								<b onClick={()=>setFormData("abcd")} className="example">abcd</b>
+								<b onClick={()=>setFormData("abcccd")} className="example">abcccd</b>
+								<b onClick={()=>setFormData( "abcdabcd")} className="example">abcdabcd</b>
+								<b onClick={()=>setFormData("abccccdabccccdabccccd")} className="example">abccccdabccccdabccccd</b>
+							</div>
 
-						</p>
+						</div>
 					</div>
-{/* } */}
+
 					<div className="form-group">
 						
 						<label htmlFor="speed">{words[language].labelSpeed}</label>
