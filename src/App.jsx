@@ -27,7 +27,7 @@ function App() {
 			const element = elements.current[index]
 			element.animate([
 				{ transform:'scale(1)'},
-				{ transform:'scale(1.05)'},
+				{ transform:'scale(1.08)'},
 				{ transform:'scale(1)' }
 			], {duration: speed});
 			
