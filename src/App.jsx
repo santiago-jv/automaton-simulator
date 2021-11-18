@@ -191,7 +191,7 @@ function App() {
 						<label htmlFor="text">{words[language].labelString}</label>
 						<input value={formData} id="text" onChange={handleInputChange} type="text"/>
 						<p className="suggestions">
-						{words[language].regularExpressionLabel}: <strong>(ab+c*d)*</strong>
+						{words[language].regularExpressionLabel}: <strong>(abc*d)*</strong>
 						</p>
 						<div className="examples-container">
 							<p className="example-title">{words[language].exampleLabel}</p>
